@@ -12,6 +12,12 @@ class BookGrid extends Component {
 
  				{books.map((book) => {
 
+
+ 						if(book.imageLinks === undefined){
+ 							book.imageLinks={}
+ 							book.imageLinks.thumbnail = 'http://via.placeholder.com/128x193?text=No%20Cover'
+ 						}
+
 						return <li key={book.id}>
 		                        <div className="book">
 		                          <div className="book-top">
