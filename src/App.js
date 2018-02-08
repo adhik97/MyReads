@@ -15,7 +15,6 @@ class BooksApp extends React.Component {
 
   state={
     books:[],
-    searchedBooks:[]
   }
 
   shelfChange = (book,shelf) => {
@@ -39,46 +38,21 @@ class BooksApp extends React.Component {
 
       })
     })
+
+    return true
   }
 
-  updateQuery = (query) => {
-    query = query.trim()
-
-    if(query === '')
-      this.setState({searchedBooks:[]})
-    else {
-      BooksAPI.search(query).then((searchedBooks) => {
-
-        if(!searchedBooks.error){
-
-          this.setState(prevState => {
-
-            searchedBooks.forEach(book => {
-              let index=prevState.books.findIndex((b) => b.id === book.id)
-              if(index > -1)
-                book.shelf=prevState.books[index].shelf
-              else
-                book.shelf='none'
-            })
-            return {searchedBooks}
-          })
-        }
-        else
-          this.setState({searchedBooks:[]})
-      })
-    }
-  }
 
 
   render() {
 
-    const { books,searchedBooks } = this.state
+    const { books } = this.state
 
     return (
       <div className="app">
 
       <Switch>
-        <Route path='/search' render={() => (<Search onShelfChange={this.shelfChange} searchedBooks={searchedBooks} onQueryUpdate={this.updateQuery}/>)}/>
+        <Route path='/search' render={() => (<Search onShelfChange={this.shelfChange} books={books}/>)}/>
         <Route exact path='/' render={() => (<Home books={books} onShelfChange={this.shelfChange}/>)}/>
         <Route component={Page404}/>
       </Switch>
